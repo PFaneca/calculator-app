@@ -1,4 +1,4 @@
-# 📐 Calculator App
+#  Calculator App
 
 This project was developed as part of a technical assessment for WIT.  
 It is a **RESTful API** built with **Java (Spring Boot)**, organized in two modules:  
@@ -10,7 +10,7 @@ The API supports the basic calculator operations: **addition, subtraction, multi
 
 ---
 
-## 🚀 Technologies
+## Technologies
 - Java 21  
 - Spring Boot  
 - Apache Kafka  
@@ -20,137 +20,76 @@ The API supports the basic calculator operations: **addition, subtraction, multi
 
 ---
 
-## 📦 Project structure
+## Project structure
 
+```text
 calculator-app/
-├── calculator/ # Calculator module (Kafka consumer + business logic)
-├── rest/ # REST API module (Kafka producer + endpoints)
-├── docker-compose.yml
-└── pom.xml # Parent POM
-text
+│── calculator/   # Calculator module (Kafka consumer + business logic)
+│── rest/         # REST API module (Kafka producer + endpoints)
+│── docker-compose.yml
+│── pom.xml       # Parent POM
+```
 
-
----
-
-## ▶️ How to run
-
+## How to Run
 ### Prerequisites
-- Java 21+  
-- Maven 3+  
-- Docker + Docker Compose  
-
----
-
+- Java 21+
+- Maven 3+
+- Docker + Docker Compose
 ### Step 1 — Start Kafka and Zookeeper
 ```bash
 docker-compose up -d kafka zookeeper
-
-Step 2 — Run Calculator module
-
-In one terminal:
-bash
-
+```
+### Step 2 — Run the Calculator module
+```bash
 cd calculator
 mvn spring-boot:run
-
-Step 3 — Run REST module
-
-In another terminal:
-bash
-
+```
+### Step 3 — Run the REST module
+```bash
 cd rest
 mvn spring-boot:run
-
-API available at:
+```
+The API will be available at:
 http://localhost:8080/api
-🔗 API Endpoints
-➕ Addition
-http
 
-GET /api/sum?a={number}&b={number}
+## API Endpoints
 
-Example:
-http
-
+### Addition
+```http
 GET /api/sum?a=10&b=5
-
-Response:
-json
-
-{
-  "result": "15"
-}
-
-➖ Subtraction
-http
-
-GET /api/subtract?a={number}&b={number}
-
-Example:
-http
-
+Response: { "result": "15" }
+```
+http://localhost:8080/api/sum?a=10&b=5
+### Subtraction
+```http
 GET /api/subtract?a=10&b=5
-
-Response:
-json
-
-{
-  "result": "5"
-}
-
-✖️ Multiplication
-http
-
-GET /api/multiply?a={number}&b={number}
-
-Example:
-http
-
+Response: { "result": "5" }
+```
+http://localhost:8080/api/subtract?a=10&b=5
+### Multiplication
+```http
 GET /api/multiply?a=10&b=5
-
-Response:
-json
-
-{
-  "result": "50"
-}
-
-➗ Division
-http
-
-GET /api/divide?a={number}&b={number}
-
-Example:
-http
-
+Response: { "result": "50" }
+```
+http://localhost:8080/api/multiply?a=10&b=5
+### Division
+```http
 GET /api/divide?a=10&b=3
+Response: { "result": "3.3333333333" }
+```
+http://localhost:8080/api/divide?a=10&b=3
 
-Response:
-json
-
-{
-  "result": "3.3333333333"
-}
-
-✅ Running tests
-
-To execute the unit tests:
-bash
-
+### Running tests
+``` bash
 mvn test
+```
 
-📝 Notes
+## Notes
 
-    Modules communicate through Apache Kafka:
+- Modules communicate through **Apache Kafka**:  
+  - REST → produces events  
+  - Calculator → consumes and executes operations  
 
-        REST → produces events
+- Configuration is managed via `application.properties` (no XML).  
 
-        Calculator → consumes and executes operations
-
-    Configuration is managed via application.properties (no XML)
-
-    The system is designed to run locally with Spring Boot
-
-    Docker is used only for Kafka/Zookeeper in this version
-
-    Supports arbitrary precision calculations using BigDecimal
+- The system is designed to run **locally with Spring Boot**; Docker is used only for Kafka/Zookeeper in this version.  
