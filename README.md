@@ -1,6 +1,6 @@
 #  Calculator App
 
-This project was developed as part of a technical assessment for WIT.  
+This project was developed to simulate a real backend development scenario, focusing on building and integrating microservices with Java, Spring Boot, REST APIs, Apache Kafka, and Docker. 
 It is a **RESTful API** built with **Java (Spring Boot)**, organized in two modules:  
 
 - **rest** → Exposes the API endpoints and produces messages to Kafka  
