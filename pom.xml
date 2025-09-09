@@ -4,7 +4,7 @@
   <artifactId>calculator-app</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <!-- 🚨 importante -->
+  <!-- importante -->
   <name>calculator-app</name>
   <description>Multi-module calculator app</description>
   <properties>
