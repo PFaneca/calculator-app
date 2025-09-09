@@ -30,11 +30,36 @@ calculator-app/
 │── pom.xml       # Parent POM
 ```
 
+## Architecture & Design Choices
+
+This project implements a **Request-Reply pattern with Kafka**, simulating synchronous behavior over an asynchronous messaging system:
+
+1. **REST API (Producer)**  
+   - Receives client requests, generates a correlation ID, and publishes messages to Kafka (`calc-requests`).
+
+2. **Calculator Service (Consumer)**  
+   - Listens for requests, executes the operation, and publishes the result to Kafka (`calc-results`) with the same correlation ID.
+
+3. **REST API (Result Listener)**  
+   - Listens for results and matches correlation IDs to complete the original HTTP request.
+
+**Key design benefits:**
+
+- Demonstrates **decoupled microservices** using Kafka  
+- Shows handling of **correlation IDs** for request-response tracking  
+- Simulates **synchronous REST response over asynchronous messaging**  
+- Easy to extend: support for new operations, logging, monitoring, retries  
+
+>  In production, Kafka is usually used for asynchronous processing (fire-and-forget).  
+> The Request-Reply pattern here is used to demonstrate correlation, async processing, and synchronous API handling.
+
 ## How to Run
 ### Prerequisites
 - Java 21+
 - Maven 3+
 - Docker + Docker Compose
+
+### Option 1 — Run services manually
 ### Step 1 — Start Kafka and Zookeeper
 ```bash
 docker-compose up -d kafka zookeeper
@@ -49,6 +74,12 @@ mvn spring-boot:run
 cd rest
 mvn spring-boot:run
 ```
+### Option 2 — Run all services with Docker
+- You can start Kafka, Zookeeper, Calculator, and REST in a single command using Docker Compose:
+```bash
+docker-compose up -d
+```
+
 The API will be available at:
 http://localhost:8080/api
 
@@ -92,4 +123,9 @@ mvn test
 
 - Configuration is managed via `application.properties` (no XML).  
 
-- The system is designed to run **locally with Spring Boot**; Docker is used only for Kafka/Zookeeper in this version.  
+- The system is designed to run **locally with Spring Boot**.
+
+- Request-Reply flow:
+  - REST sends request with correlation ID → Calculator consumes → Calculator publishes result → REST matches correlation ID → client receives response.   
+
+- Docker: All services can be run together with Docker Compose for easy local testing and demos.
